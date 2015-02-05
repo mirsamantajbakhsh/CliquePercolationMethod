@@ -139,7 +139,11 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
         while (tmp != null) {
 
             if (cancel) {
-                break;
+                //Empty variables
+                Bk.list.clear();
+                tmp.clear();
+                Cliques.clear();
+                return;
             }
 
             //Search for Bk+1
@@ -171,11 +175,11 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
         report += "Clique Detection started. Nodes with <b>" + (k - 1) + "</b> edges will not be included.";
         report += "<br><br>";
         report += "Found Cliques of size " + getK() + ".<br>Now making new graph ...<br>Clearing old graph ...";
-        
+
         //edit the graph
         g.clear();
         report += " [+]<br>Creating new nodes ...";
-        
+
         gm = Lookup.getDefault().lookup(GraphController.class).getModel();
         int nID = 0;
         Set<Node> nodes = new HashSet<Node>();
@@ -190,10 +194,10 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
 
             nodeLabel = nodeLabel.substring(0, nodeLabel.length() - 1); //remove last ,
             firstNode.getNodeData().setLabel(nodeLabel);
-            
+
             nodes.add(firstNode);
         }
-        
+
         report += "[+]<br>Detecting and creating the edges ...";
         HashSet<Edge> edges = new HashSet<Edge>();
 
@@ -204,7 +208,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
                 }
             }
         }
-        
+
         report += "[+]<br>Redrawing new graph ...";
         for (Node n : nodes) {
             g.addNode(n);
@@ -213,9 +217,9 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
         for (Edge e : edges) {
             g.addEdge(e);
         }
-        report+= "[+]<br>Done!<br><br><br>Palla, Gergely, Imre Derényi, Illés Farkas, and Tamás Vicsek. \"Uncovering the overlapping community structure of complex networks in nature and society.\" Nature 435, no. 7043 (2005): 814-818";
+        report += "[+]<br>Done!<br><br><br>Palla, Gergely, Imre Derényi, Illés Farkas, and Tamás Vicsek. \"Uncovering the overlapping community structure of complex networks in nature and society.\" Nature 435, no. 7043 (2005): 814-818";
     }
-    
+
     private int getSharedNodes(Node vi, Node vj) {
         String[] firstCliqueNodes = vi.getNodeData().getLabel().split(",");
         String[] secondCliqueNodes = vj.getNodeData().getLabel().split(",");
