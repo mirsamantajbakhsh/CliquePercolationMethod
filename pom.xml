@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.gephi</groupId>
+    <artifactId>gephi-plugins</artifactId>
+    <version>0.10.0</version>
+    <packaging>pom</packaging>
+
+    <name>gephi-plugins</name>
+    
+    <!-- List of modules -->
+    <modules>
+        <!-- Add here the paths of all modules (e.g. <module>modules/MyModule</module>) -->
+        <module>modules/CPMplugin</module>
+    </modules>
+    
+    <!-- Properties -->
+    <properties>
+        <!-- Version of Gephi building plugins against. Plugins with anterior versions will be ignored -->
+        <gephi.version>0.10.0</gephi.version>
+        <clusters.path>${project.build.directory}/plugins_clusters</clusters.path>
+        <github.global.server>github</github.global.server>
+    </properties>
+    
+    <!-- SCM -->
+    <scm>
+        <connection>scm:git:git://github.com/gephi/gephi-plugins.git</connection>
+        <developerConnection>scm:git:git@github.com:gephi/gephi-plugins.git</developerConnection>
+        <url>https://github.com/gephi/gephi-plugins</url>
+    </scm>
+
+    <!-- Repositories -->
+    <repositories>
+        <repository>
+            <id>oss-sonatype</id>
+            <name>oss-sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    
+    <!-- Plugin Repositories -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss-sonatype</id>
+            <name>oss-sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!-- For site only -->
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>scm:git:https://github.com/gephi/gephi-plugins.git</url>
+        </site>
+    </distributionManagement>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gephi</artifactId>
+            <version>${gephi.version}</version>
+            <classifier>linux-x64</classifier>
+            <type>tar.gz</type>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <!-- Plugins installed with versions -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.netbeans.utilities</groupId>
+                    <artifactId>nbm-maven-plugin</artifactId>
+                    <version>4.5</version>
+                    <extensions>true</extensions>
+                </plugin>
+                <plugin>
+                    <groupId>org.gephi</groupId>
+                    <artifactId>gephi-maven-plugin</artifactId>
+                    <version>1.3.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
+        <!-- Plugins -->
+        <plugins>
+            <!-- Configure gephi-maven-plugin -->
+            <plugin>
+                <groupId>org.gephi</groupId>
+                <artifactId>gephi-maven-plugin</artifactId>
+                <configuration>
+                    <metadataUrl>https://gephi.org/gephi-plugins/plugins/</metadataUrl>
+                    <gephiDirectory>${project.build.directory}/gephi-${gephi.version}</gephiDirectory>
+                    <outputDirectory>${project.build.directory}/site/plugins/</outputDirectory>
+                    <skipUnchangedVersions>true</skipUnchangedVersions>
+                    <clusters>
+                        <cluster>${clusters.path}/plugins</cluster>
+                    </clusters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate-plugin</id>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Unpack the localization dependency -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>${project.groupId}</includeGroupIds>
+                            <includeArtifactIds>gephi</includeArtifactIds>
+                            <outputDirectory>
+                                ${project.build.directory}
+                            </outputDirectory>
+                            <excludes>**/jre/**</excludes>
+                            <excludes>**/jre-x64/**</excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- NBM Plugin -->
+            <plugin>
+                <groupId>org.apache.netbeans.utilities</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <nbmBuildDir>${clusters.path}</nbmBuildDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>cluster</goal>
+                        </goals>
+                    </execution>
+                    <!-- Disable default-branding as it's only needed for the branding module -->
+                    <execution>
+                        <id>default-branding</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <!-- Custom profile only used to build and package all modules at once -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Build metadata -->
+                    <plugin>
+                        <groupId>org.gephi</groupId>
+                        <artifactId>gephi-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>build-metadata</id>
+                                <goals>
+                                    <goal>build-metadata</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>create-autoupdate</id>
+                                <goals>
+                                    <goal>create-autoupdate</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Publish site folder to GitHub's gh-pages branch -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-scm-publish-plugin</artifactId>
+                        <configuration>
+                            <content>${project.build.directory}/site</content>
+                            <scmBranch>gh-pages</scmBranch>
+                            <checkinComment>Autoupdate update for ${project.version} and gephiVersion=${gephi.version}</checkinComment>
+                            <serverId>github</serverId>
+                            <skipDeletedFiles>true</skipDeletedFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
+
