@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
-import org.gephi.data.attributes.api.AttributeModel;
 import org.gephi.graph.api.Edge;
 import org.gephi.graph.api.Graph;
 import org.gephi.graph.api.GraphController;
@@ -35,11 +35,13 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     private int k = 0;
     private Set<Set<Node>> Cliques = new HashSet<Set<Node>>();
     GenQueue<TreeSet<Node>> Bk = new GenQueue<TreeSet<Node>>();
+    
+    Random r=new Random();
 
     public class SortByID implements Comparator<Node> {
 
         public int compare(Node n1, Node n2) {
-            if (n1.getId() > n2.getId()) {
+            if (n1.getStoreId() > n2.getStoreId()) {
                 return 1;
             } else {
                 return -1;
@@ -91,7 +93,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     private Vector<Node> getLargerIndexNodes(Graph g, Node vi) {
         Vector<Node> output = new Vector<Node>();
         for (Node n : g.getNodes()) {
-            if (n.getId() > vi.getId() && g.getEdge(n, vi) != null) {
+            if (n.getStoreId() > vi.getStoreId() && (g.getEdge(n, vi) != null || g.getEdge(vi, n) != null)) {
                 //TODO check degree of n and vi
                 output.addElement(n);
             }
@@ -107,7 +109,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
                     continue;
                 }
 
-                if (g.getEdge(firstNode, secondNode) == null) { //One edge is missing in the Bk+1 clique
+                if (g.getEdge(firstNode, secondNode) == null && g.getEdge(secondNode,firstNode) == null) { //One edge is missing in the Bk+1 clique
                     return false;
                 }
             }
@@ -117,7 +119,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     }
 
     @Override
-    public void execute(GraphModel gm, AttributeModel am) {
+    public void execute(GraphModel gm) {
         Graph g = gm.getGraphVisible();
 
         g.readLock();
@@ -180,7 +182,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
         g.clear();
         report += " [+]<br>Creating new nodes ...";
 
-        gm = Lookup.getDefault().lookup(GraphController.class).getModel();
+        gm = Lookup.getDefault().lookup(GraphController.class).getGraphModel();
         int nID = 0;
         Set<Node> nodes = new HashSet<Node>();
 
@@ -189,12 +191,14 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
             String nodeLabel = "";
 
             for (Node n : firstClique) {
-                nodeLabel += n.getNodeData().getLabel() + ",";
+                nodeLabel += n.getLabel() + ",";
             }
 
             nodeLabel = nodeLabel.substring(0, nodeLabel.length() - 1); //remove last ,
-            firstNode.getNodeData().setLabel(nodeLabel);
-
+            firstNode.setLabel(nodeLabel);
+            firstNode.setSize(5f);
+            firstNode.setX(-300 + r.nextInt(600));
+            firstNode.setY(-300 + r.nextInt(600));
             nodes.add(firstNode);
         }
 
@@ -204,10 +208,10 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
         for (Node vi : nodes) {
             for (Node vj : nodes) {
                 if ((vi != vj) && (getSharedNodes(vi, vj) == k - 1)) {
-                    if (g.getGraphModel().isDirected()) {
-                        edges.add(gm.factory().newEdge(vi, vj, 1.0f, true));
+                    if (g.isDirected()) {
+                        edges.add(gm.factory().newEdge(vi, vj,  true));
                     } else {
-                        edges.add(gm.factory().newEdge(vi, vj, 1.0f, false));
+                        edges.add(gm.factory().newEdge(vi, vj,  false));
                     }
                 }
             }
@@ -225,8 +229,8 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     }
 
     private int getSharedNodes(Node vi, Node vj) {
-        String[] firstCliqueNodes = vi.getNodeData().getLabel().split(",");
-        String[] secondCliqueNodes = vj.getNodeData().getLabel().split(",");
+        String[] firstCliqueNodes = vi.getLabel().split(",");
+        String[] secondCliqueNodes = vj.getLabel().split(",");
 
         int sharedNodes = 0;
 
