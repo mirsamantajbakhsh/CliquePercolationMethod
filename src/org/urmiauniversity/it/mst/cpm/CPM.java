@@ -121,6 +121,11 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
 
         g.readLock();
 
+        if (g.isDirected()){
+            report = "Graph cannot be directed";
+            return;
+        }
+
         //Firstly add each node as an item in Bk
         TreeSet<Node> tmp;
         for (Node n : g.getNodes()) {
