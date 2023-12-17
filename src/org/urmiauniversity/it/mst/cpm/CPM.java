@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
-import org.gephi.data.attributes.api.AttributeModel;
 import org.gephi.graph.api.Edge;
 import org.gephi.graph.api.Graph;
 import org.gephi.graph.api.GraphController;
