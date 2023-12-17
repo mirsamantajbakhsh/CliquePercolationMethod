@@ -204,9 +204,9 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
             for (Node vj : nodes) {
                 if ((vi != vj) && (getSharedNodes(vi, vj) == k - 1)) {
                     if (g.isDirected()) {
-                        edges.add(gm.factory().newEdge(vi, vj, 1.0f, true));
+                        edges.add(gm.factory().newEdge(vi, vj, true));
                     } else {
-                        edges.add(gm.factory().newEdge(vi, vj, 1.0f, false));
+                        edges.add(gm.factory().newEdge(vi, vj, false));
                     }
                 }
             }
