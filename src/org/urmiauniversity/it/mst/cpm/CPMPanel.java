@@ -24,10 +24,9 @@ public class CPMPanel extends JPanel {
     @SuppressWarnings("unchecked")
     public CPMPanel() {
         //this.setLayout(null);
-        org.jdesktop.swingx.JXHeader jXHeader1 = new org.jdesktop.swingx.JXHeader();
+        JlLabel jXHeader1 = new JlLabel();
 
-        jXHeader1.setDescription("Enter the value for k (clique size, ex: k = 3 will find triangualrs). Higher values of k may take more time for computation. This algorithm is NP-Hard, so use it carefully."); // NOI18N
-        jXHeader1.setTitle("Clique Detector");
+        jXHeader1.setText("Enter the value for k (clique size, ex: k = 3 will find triangualrs). Higher values of k may take more time for computation. This algorithm is NP-Hard, so use it carefully."); // NOI18N
 
         JLabel label = new JLabel("Enter value of k here:");
         label.setFont(new Font("Times New Roman", Font.ROMAN_BASELINE, 13));
