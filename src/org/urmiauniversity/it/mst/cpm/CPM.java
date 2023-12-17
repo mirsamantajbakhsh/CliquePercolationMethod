@@ -198,7 +198,9 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
 
             nodeLabel = nodeLabel.substring(0, nodeLabel.length() - 1); //remove last ,
             firstNode.setLabel(nodeLabel);
-
+            firstNode.setSize(5f);
+            firstNode.setX(-300 + r.nextInt(600));
+            firstNode.setY(-300 + r.nextInt(600));
             nodes.add(firstNode);
         }
 
