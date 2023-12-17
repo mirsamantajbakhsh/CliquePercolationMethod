@@ -116,7 +116,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     }
 
     @Override
-    public void execute(GraphModel gm, AttributeModel am) {
+    public void execute(GraphModel gm) {
         Graph g = gm.getGraphVisible();
 
         g.readLock();
