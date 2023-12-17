@@ -179,7 +179,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
         g.clear();
         report += " [+]<br>Creating new nodes ...";
 
-        gm = Lookup.getDefault().lookup(GraphController.class).getModel();
+        gm = Lookup.getDefault().lookup(GraphController.class).getGraphModel();
         int nID = 0;
         Set<Node> nodes = new HashSet<Node>();
 
