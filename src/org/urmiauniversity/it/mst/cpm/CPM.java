@@ -38,7 +38,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     public class SortByID implements Comparator<Node> {
 
         public int compare(Node n1, Node n2) {
-            if (n1.getId() > n2.getId()) {
+            if (n1.getStoreId() > n2.getStoreId()) {
                 return 1;
             } else {
                 return -1;
@@ -90,7 +90,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     private Vector<Node> getLargerIndexNodes(Graph g, Node vi) {
         Vector<Node> output = new Vector<Node>();
         for (Node n : g.getNodes()) {
-            if (n.getId() > vi.getId() && g.getEdge(n, vi) != null) {
+            if (n.getStoreId() > vi.getStoreId() && g.getEdge(n, vi) != null) {
                 //TODO check degree of n and vi
                 output.addElement(n);
             }
