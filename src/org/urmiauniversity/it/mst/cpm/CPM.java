@@ -188,11 +188,11 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
             String nodeLabel = "";
 
             for (Node n : firstClique) {
-                nodeLabel += n.getNodeData().getLabel() + ",";
+                nodeLabel += n.getLabel() + ",";
             }
 
             nodeLabel = nodeLabel.substring(0, nodeLabel.length() - 1); //remove last ,
-            firstNode.getNodeData().setLabel(nodeLabel);
+            firstNode.setLabel(nodeLabel);
 
             nodes.add(firstNode);
         }
@@ -224,8 +224,8 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     }
 
     private int getSharedNodes(Node vi, Node vj) {
-        String[] firstCliqueNodes = vi.getNodeData().getLabel().split(",");
-        String[] secondCliqueNodes = vj.getNodeData().getLabel().split(",");
+        String[] firstCliqueNodes = vi.getLabel().split(",");
+        String[] secondCliqueNodes = vj.getLabel().split(",");
 
         int sharedNodes = 0;
 
