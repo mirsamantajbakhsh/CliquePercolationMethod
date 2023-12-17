@@ -106,7 +106,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
                     continue;
                 }
 
-                if (!(g.isAdjacent(firstNode, secondNode) )) { //One edge is missing in the Bk+1 clique
+                if (!(g.isAdjacent(firstNodefirstNode, secondNode) )) { //One edge is missing in the Bk+1 clique
                     return false;
                 }
             }
