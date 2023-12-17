@@ -90,7 +90,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
     private Vector<Node> getLargerIndexNodes(Graph g, Node vi) {
         Vector<Node> output = new Vector<Node>();
         for (Node n : g.getNodes()) {
-            if (n.getStoreId() > vi.getStoreId() && g.getEdge(n, vi) != null) {
+            if (n.getStoreId() > vi.getStoreId() && g.isAdjacent(n, vi)) {
                 //TODO check degree of n and vi
                 output.addElement(n);
             }
@@ -106,7 +106,7 @@ public class CPM implements org.gephi.statistics.spi.Statistics, LongTask {
                     continue;
                 }
 
-                if (g.getEdge(firstNode, secondNode) == null) { //One edge is missing in the Bk+1 clique
+                if (!(g.isAdjacent(firstNode, secondNode) )) { //One edge is missing in the Bk+1 clique
                     return false;
                 }
             }
