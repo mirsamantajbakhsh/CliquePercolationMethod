@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="my.company.my.plugin">
+    <module_version install_time="1701463057175" last="true" origin="installer" specification_version="1.0.0">
+        <file crc="369147739" name="config/Modules/my-company-my-plugin.xml"/>
+        <file crc="2972417551" name="modules/ext/my.company.my-plugin/org-gephi/gephi-toolkit.jar"/>
+        <file crc="2323792826" name="modules/my-company-my-plugin.jar"/>
+    </module_version>
+</module>
