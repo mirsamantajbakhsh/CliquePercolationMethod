@@ -1,0 +1,8 @@
+META-INF\services\org.gephi.statistics.spi.StatisticsUI
+ir\plugin\CPM$SortByID.class
+META-INF\services\org.gephi.statistics.spi.StatisticsBuilder
+ir\plugin\CPM$GenQueue.class
+ir\plugin\CPM.class
+ir\plugin\CPMBuilder.class
+ir\plugin\CPMUI.class
+ir\plugin\CPMPanel.class

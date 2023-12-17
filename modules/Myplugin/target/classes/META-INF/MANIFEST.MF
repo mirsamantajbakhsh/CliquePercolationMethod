@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Name: My plugin
+OpenIDE-Module-Short-Description: one sentence
+OpenIDE-Module-Long-Description:   multiple sentences
+OpenIDE-Module-Display-Category: Tool
+OpenIDE-Module-Specification-Version: 1.0.0
+OpenIDE-Module-Implementation-Version: 1.0.0
+OpenIDE-Module-Build-Version: ۲۰۲۳۱۲۰۱۲۰۳۷
+OpenIDE-Module: my.company.my.plugin
+OpenIDE-Module-Public-Packages: -
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+X-Class-Path: ext/my.company.my-plugin/org-gephi/gephi-toolkit.jar
+Maven-Class-Path: org.gephi:gephi-toolkit:0.10.0
+OpenIDE-Module-Module-Dependencies: org.openide.util.lookup > 8.52, or
+ g.gephi.graph.api > 0.10.0, org.gephi.utils.longtask > 0.10.0, org.ge
+ phi.statistics.api > 0.10.0
+
