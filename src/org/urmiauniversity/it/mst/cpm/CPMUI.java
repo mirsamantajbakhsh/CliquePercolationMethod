@@ -59,7 +59,7 @@ public class CPMUI implements StatisticsUI {
 
     @Override
     public String getShortDescription() {
-        return "Clique Percolation Method implementaion in gephi";
+        return "Clique Percolation Method implementation in gephi";
     }
 
     @Override
