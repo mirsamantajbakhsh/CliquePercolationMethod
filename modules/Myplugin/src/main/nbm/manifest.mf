@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Name: My plugin
+OpenIDE-Module-Short-Description:  one sentence
+OpenIDE-Module-Long-Description: multiple sentences
+OpenIDE-Module-Display-Category: Tool
